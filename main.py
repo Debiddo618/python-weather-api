@@ -4,10 +4,12 @@ import pandas as pd
 # Flask is a website object
 app = Flask(__name__)
 
+station=pd.read_csv("data_small/stations.txt",skiprows=17)
+station=station[["STAID","STANAME                                 "]]
 @app.route("/")
 def home():
     # Flask will look at templates folder by default
-    return render_template("home.html")
+    return render_template("home.html", data=station.to_html())
 @app.route("/api/v1/<station>/<date>")
 def about(station,date):
     # Flask will look at templates folder by default
@@ -17,4 +19,4 @@ def about(station,date):
     return {"station":station,"date":date,"temperature":temperature}
 
 if __name__=="__main__":
-    app.run(debug=True, port=5002)
+    app.run(debug=True, port=5001)
